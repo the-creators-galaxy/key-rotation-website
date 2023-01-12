@@ -17,6 +17,7 @@ import {
   TransactionBody,
 } from "@bugbytes/hapi-proto";
 import { hasSignatureMatch } from "@/models/signature-match";
+import { sequences_are_equal } from "@bugbytes/hapi-util";
 
 const expires = ref<Date>();
 const starts = ref<Date>();
@@ -93,7 +94,17 @@ async function pasteSignature() {
     const bytes = ed.utils.hexToBytes(text);
     const sigMap = SignatureMap.decode(bytes);
     for (const sigPair of sigMap.sigPair) {
-      signatures.value.push(sigPair);
+      let dupFound = false;
+      for (const existingPair of signatures.value) {
+        if(sequences_are_equal(sigPair.pubKeyPrefix, existingPair.pubKeyPrefix)) {
+          dupFound = true;
+          error.value = "Can't add duplicate signatures.";          
+          break;
+        }        
+      }
+      if(!dupFound) {
+        signatures.value.push(sigPair);
+      }
     }
   } catch (err) {
     error.value = "Error Retrieving signature from Clipboard.";

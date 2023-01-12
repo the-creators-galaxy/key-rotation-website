@@ -53,7 +53,7 @@ i {
   color: var(--cds-cp-400);
 }
 
-div+h2 {
+div + h2 {
   margin-top: 24px;
 }
 </style>

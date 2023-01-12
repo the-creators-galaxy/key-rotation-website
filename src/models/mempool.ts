@@ -9,7 +9,7 @@ import {
   TransactionReceipt,
   type Key,
 } from "@bugbytes/hapi-proto";
-import { createMempoolClient } from "./config";
+import { createMempoolClient, selectRandomGossipNode } from "./config";
 
 export interface RotateKeyParams {
   accountId: AccountID;
@@ -19,7 +19,7 @@ export interface RotateKeyParams {
 
 export function createKeyRotationTransaction(
   createParams: RotateKeyParams
-): Uint8Array {
+): Uint8Array {  
   const transactionID = TransactionID.fromPartial({
     accountID: createParams.accountId,
     transactionValidStart: createTimestampFromNow(createParams.startDelay || 0),
@@ -34,9 +34,7 @@ export function createKeyRotationTransaction(
         }),
       },
       transactionFee: 5_00_000_000,
-      nodeAccountID: AccountID.fromPartial({
-        account: { $case: "accountNum", accountNum: 3 },
-      }),
+      nodeAccountID: selectRandomGossipNode(),
       transactionValidDuration: { seconds: 180 },
       memo: "",
       transactionID,

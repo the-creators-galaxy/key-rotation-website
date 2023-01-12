@@ -1,3 +1,5 @@
+import type { AccountID } from '@bugbytes/hapi-proto';
+import { keyString_to_accountID } from '@bugbytes/hapi-util';
 import { MempoolRestClient, type ChannelInfo } from "@bugbytes/hapi-mempool";
 import { MirrorRestClient } from "@bugbytes/hapi-mirror";
 import { ref } from "vue";
@@ -87,4 +89,9 @@ export function createMirrorClient(): MirrorRestClient {
 }
 export function createMempoolClient(): MempoolRestClient {
   return new MempoolRestClient(config.value.mempoolEndpoint);
+}
+
+export function selectRandomGossipNode(): AccountID {
+  const node = config.value.nodes[Math.floor(Math.random() * config.value.nodes.length)];
+  return keyString_to_accountID(node.account);
 }
