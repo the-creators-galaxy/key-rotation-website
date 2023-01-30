@@ -3,7 +3,7 @@ import AccountIdDisplay from "@/components/AccountIdDisplay.vue";
 import HbarDisplay from "@/components/HbarDisplay.vue";
 import { computed, onMounted, ref } from "vue";
 import { model } from "@/models/rotation-input-context";
-import { getTransactionReceipt } from "@/models/mempool";
+import { getTransactionReceipt } from "@/models/hashpool";
 import { ResponseCodeEnum } from "@bugbytes/hapi-proto";
 import { MirrorError } from "@bugbytes/hapi-mirror";
 import {

@@ -9,7 +9,7 @@ import {
   TransactionReceipt,
   type Key,
 } from "@bugbytes/hapi-proto";
-import { createMempoolClient, selectRandomGossipNode } from "./config";
+import { createHashpoolClient, selectRandomGossipNode } from "./config";
 
 export interface RotateKeyParams {
   accountId: AccountID;
@@ -19,7 +19,7 @@ export interface RotateKeyParams {
 
 export function createKeyRotationTransaction(
   createParams: RotateKeyParams
-): Uint8Array {  
+): Uint8Array {
   const transactionID = TransactionID.fromPartial({
     accountID: createParams.accountId,
     transactionValidStart: createTimestampFromNow(createParams.startDelay || 0),
@@ -54,7 +54,7 @@ export async function submitTransaction(
     bodyBytes,
     sigMap: SignatureMap.fromPartial({ sigPair }),
   }).finish();
-  const client = createMempoolClient();
+  const client = createHashpoolClient();
   await client.submitTransaction(signedTransactionBytes);
 }
 
@@ -70,7 +70,7 @@ export async function getTransactionReceipt(
   if (delay > 0) {
     await new Promise((resolve) => setTimeout(resolve, delay));
   }
-  const client = createMempoolClient();
+  const client = createHashpoolClient();
   return await client.getTransactionReceipt(transactionID);
 }
 

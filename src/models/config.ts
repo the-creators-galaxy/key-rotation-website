@@ -1,6 +1,6 @@
-import type { AccountID } from '@bugbytes/hapi-proto';
-import { keyString_to_accountID } from '@bugbytes/hapi-util';
-import { MempoolRestClient, type ChannelInfo } from "@bugbytes/hapi-mempool";
+import type { AccountID } from "@bugbytes/hapi-proto";
+import { keyString_to_accountID } from "@bugbytes/hapi-util";
+import { HashpoolRestClient, type ChannelInfo } from "@bugbytes/hapi-hashpool";
 import { MirrorRestClient } from "@bugbytes/hapi-mirror";
 import { ref } from "vue";
 
@@ -10,7 +10,7 @@ export type KnownNetwork = "mainnet" | "testnet" | "previewnet";
  * Remote server details the user interface is relying upon for information.
  */
 export interface ConfigInfo {
-  mempoolEndpoint: string;
+  hashpoolEndpoint: string;
   mirrorEndpoint: string;
   network: KnownNetwork;
   nodes: ChannelInfo[];
@@ -38,11 +38,11 @@ export function ensureConfiguration(): Promise<void> {
   return loadTask;
 }
 async function loadConfiguration(): Promise<void> {
-  const client = new MempoolRestClient(import.meta.env.VITE_API_MEMPOOL_URL);
+  const client = new HashpoolRestClient(import.meta.env.VITE_API_HASHPOOL_URL);
   const info = await client.getInfo();
   const network = guessNetwork(info.mirror_node);
   config.value = {
-    mempoolEndpoint: import.meta.env.VITE_API_MEMPOOL_URL,
+    hashpoolEndpoint: import.meta.env.VITE_API_HASHPOOL_URL,
     mirrorEndpoint: info.mirror_node,
     network,
     nodes: info.channels,
@@ -87,11 +87,12 @@ function guessNetwork(url: string): KnownNetwork {
 export function createMirrorClient(): MirrorRestClient {
   return new MirrorRestClient(config.value.mirrorEndpoint);
 }
-export function createMempoolClient(): MempoolRestClient {
-  return new MempoolRestClient(config.value.mempoolEndpoint);
+export function createHashpoolClient(): HashpoolRestClient {
+  return new HashpoolRestClient(config.value.hashpoolEndpoint);
 }
 
 export function selectRandomGossipNode(): AccountID {
-  const node = config.value.nodes[Math.floor(Math.random() * config.value.nodes.length)];
+  const node =
+    config.value.nodes[Math.floor(Math.random() * config.value.nodes.length)];
   return keyString_to_accountID(node.account);
 }

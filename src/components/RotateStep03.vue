@@ -5,7 +5,7 @@ import EndorsementTrack from "@/components/EndorsementTrack.vue";
 import {
   createKeyRotationTransaction,
   submitTransaction,
-} from "@/models/mempool";
+} from "@/models/hashpool";
 import { model } from "@/models/rotation-input-context";
 import AccountIdDisplay from "./AccountIdDisplay.vue";
 import {
@@ -96,13 +96,15 @@ async function pasteSignature() {
     for (const sigPair of sigMap.sigPair) {
       let dupFound = false;
       for (const existingPair of signatures.value) {
-        if(sequences_are_equal(sigPair.pubKeyPrefix, existingPair.pubKeyPrefix)) {
+        if (
+          sequences_are_equal(sigPair.pubKeyPrefix, existingPair.pubKeyPrefix)
+        ) {
           dupFound = true;
-          error.value = "Can't add duplicate signatures.";          
+          error.value = "Can't add duplicate signatures.";
           break;
-        }        
+        }
       }
-      if(!dupFound) {
+      if (!dupFound) {
         signatures.value.push(sigPair);
       }
     }

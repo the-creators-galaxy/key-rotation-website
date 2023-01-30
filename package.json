@@ -14,10 +14,10 @@
     "vue": "^3.2.45"
   },
   "devDependencies": {
-    "@bugbytes/hapi-mempool": "0.31.11",
-    "@bugbytes/hapi-mirror": "0.31.11",
-    "@bugbytes/hapi-proto": "0.31.11",
-    "@bugbytes/hapi-util": "0.31.11",
+    "@bugbytes/hapi-hashpool": "0.31.13",
+    "@bugbytes/hapi-mirror": "0.31.13",
+    "@bugbytes/hapi-proto": "0.31.13",
+    "@bugbytes/hapi-util": "0.31.13",
     "@noble/ed25519": "^1.7.1",
     "@noble/secp256k1": "^1.7.0",
     "@rushstack/eslint-patch": "^1.2.0",

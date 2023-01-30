@@ -7,7 +7,7 @@ import { config } from "@/models/config";
     <span
       v-if="'mainnet' === config.network"
       class="main"
-      :title="config.mempoolEndpoint"
+      :title="config.hashpoolEndpoint"
       >Main Network</span
     >
     <span
@@ -16,7 +16,7 @@ import { config } from "@/models/config";
       title="Locating Network Info ..."
       >...</span
     >
-    <span v-else class="other" :title="config.mempoolEndpoint">{{
+    <span v-else class="other" :title="config.hashpoolEndpoint">{{
       config.network
     }}</span>
   </header>
